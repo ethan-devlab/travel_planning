@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+{% block title %}搜尋行程{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        -webkit-background-clip: text;
+        /* -webkit-text-fill-color: transparent; */
+        background-clip: text;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .search-section {
+        background: rgba(253, 250, 246, 0.8);
+        border: 1px solid var(--sidebar-border);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+        backdrop-filter: blur(5px);
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 0.5rem;
+    }
+
+    .form-label {
+        color: var(--text-primary);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid var(--secondary-color);
+        border-radius: 12px;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(153, 188, 133, 0.25);
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+    }
+
+    .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+
+    .results-section {
+        margin-top: 2rem;
+    }
+
+    .results-header {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .itinerary-card {
+        background: linear-gradient(135deg, rgba(253, 250, 246, 0.95) 0%, rgba(250, 241, 230, 0.9) 100%);
+        border: 2px solid var(--secondary-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(5px);
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .itinerary-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        border-radius: 20px 20px 0 0;
+    }
+
+    .itinerary-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-large);
+        border-color: var(--primary-light);
+    }
+
+    .card-title {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .card-title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .card-title a:hover {
+        color: var(--primary-color);
+    }
+
+    .card-details {
+        margin-bottom: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .detail-item i {
+        color: var(--primary-color);
+        width: 18px;
+        text-align: center;
+    }
+
+    .badge {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-right: 0.5rem;
+        margin-bottom: 0.25rem;
+        display: inline-block;
+    }
+
+    .badge.bg-secondary {
+        background: linear-gradient(135deg, var(--text-secondary), #94a3b8);
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, #52c41a, #73d13d);
+    }
+
+    .badge.bg-info {
+        background: linear-gradient(135deg, #1890ff, #40a9ff);
+    }
+
+    .tag-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(253, 250, 246, 0.8);
+        border: 2px dashed var(--secondary-color);
+        border-radius: 20px;
+        margin-top: 2rem;
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state h4 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
+
+    .quick-filters {
+        background: rgba(228, 239, 231, 0.3);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .quick-filters h6 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .filter-tag {
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid var(--secondary-color);
+        color: var(--text-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .filter-tag:hover {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .tag-group, .filter-tags {
+            flex-direction: column;
+        }
+
+        .itinerary-card {
+            padding: 1rem;
+        }
+
+        .detail-item {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="search-page">
+    <h2 class="page-header">🔍 搜尋旅遊行程</h2>
+    
+    <!-- Quick Filters -->
+    <div class="quick-filters">
+        <h6>
+            <i class="ri-filter-line"></i>
+            快速篩選
+        </h6>
+        <div class="filter-tags">
+            <a href="?travel_method=walk" class="filter-tag">🚶 步行旅遊</a>
+            <a href="?travel_method=car" class="filter-tag">🚗 自駕遊</a>
+            <a href="?travel_method=plane" class="filter-tag">✈️ 航空旅遊</a>
+            <a href="?location=日本" class="filter-tag">🗾 日本</a>
+            <a href="?location=台灣" class="filter-tag">🏝️ 台灣</a>
+            <a href="?budget=10000" class="filter-tag">💰 預算友善</a>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="search-section">
+        <h5 class="section-title">
+            <i class="ri-search-line"></i>
+            搜尋條件
+        </h5>
+        
+        <form method="get">
+            <div class="mb-3">
+                <label class="form-label">
+                    <i class="ri-text"></i>
+                    關鍵字
+                </label>
+                {{ form.q }}
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">
+                        <i class="ri-map-pin-line"></i>
+                        地點 / 國家
+                    </label>
+                    {{ form.location }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        <i class="ri-road-map-line"></i>
+                        旅遊方式
+                    </label>
+                    {{ form.travel_method }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        <i class="ri-bus-line"></i>
+                        交通方式
+                    </label>
+                    {{ form.transport }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        <i class="ri-money-dollar-circle-line"></i>
+                        預算
+                    </label>
+                    {{ form.budget }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        <i class="ri-calendar-line"></i>
+                        開始日期
+                    </label>
+                    {{ form.start_date }}
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        <i class="ri-calendar-check-line"></i>
+                        結束日期
+                    </label>
+                    {{ form.end_date }}
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">
+                    <i class="ri-search-line"></i>
+                    開始搜尋
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    {% if results %}
+    <div class="results-section">
+        <h5 class="results-header">
+            <i class="ri-list-check-line"></i>
+            搜尋結果 ({{ results|length }} 個行程)
+        </h5>
+        
+        {% for itinerary in results %}
+        <div class="itinerary-card">
+            <h5 class="card-title">
+                <i class="ri-map-2-line"></i>
+                <a href="{% url 'itinerary_detail' itinerary.id %}">
+                    {{ itinerary.title }}
+                </a>
+            </h5>
+            
+            <div class="card-details">
+                <div class="detail-item">
+                    <i class="ri-calendar-line"></i>
+                    <span>{{ itinerary.start_date }} ~ {{ itinerary.end_date }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span>預算：${{ itinerary.budget|default:"未設定" }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="ri-map-pin-line"></i>
+                    <span>{{ itinerary.locations.count|default:0 }} 個地點</span>
+                </div>
+            </div>
+
+            {% if itinerary.description %}
+            <div class="detail-item">
+                <i class="ri-file-text-line"></i>
+                <span>{{ itinerary.description|truncatewords:20 }}</span>
+            </div>
+            {% endif %}
+
+            <div class="tag-group">
+                <!-- Tags -->
+                {% for tag in itinerary.tags.all %}
+                <span class="badge bg-secondary">{{ tag.name }}</span>
+                {% endfor %}
+                
+                <!-- Location info -->
+                {% with itinerary.locations.first as loc %}
+                {% if loc %}
+                <span class="badge bg-primary">{{ loc.get_travel_method_display }}</span>
+                <span class="badge bg-success">{{ loc.name }}</span>
+                {% if loc.note %}
+                <span class="badge bg-info">{{ loc.note }}</span>
+                {% endif %}
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h4>沒有找到符合條件的行程</h4>
+        <p>試著調整搜尋條件，或瀏覽所有行程來發現更多精彩旅程！</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

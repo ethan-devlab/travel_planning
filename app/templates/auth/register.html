@@ -1,0 +1,39 @@
+{% extends "auth/base.html" %}
+
+{% block title %}註冊 TravelPlan{% endblock %}
+
+{% block content %}
+    <div class="card p-4">
+        <h4 class="card-title mb-3 text-center">📝 註冊 TravelPlan 帳號</h4>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="mb-3">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+            </div>
+            <div class="mb-3">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <button type="submit" class="btn btn-primary w-100">註冊</button>
+        </form>
+        <div class="text-center mt-3">
+            已有帳號？<a href="{% url 'login' %}">立即登入</a>
+        </div>
+    </div>
+{% endblock %}

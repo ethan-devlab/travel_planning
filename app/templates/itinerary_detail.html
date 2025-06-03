@@ -1,0 +1,520 @@
+{% extends "base.html" %}
+{% block title %}{{ itinerary.title }}{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        -webkit-background-clip: text;
+        /* -webkit-text-fill-color: transparent; */
+        background-clip: text;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .itinerary-overview {
+        background: rgba(253, 250, 246, 0.8);
+        border: 1px solid var(--sidebar-border);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+        backdrop-filter: blur(5px);
+    }
+
+    .overview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .overview-item {
+        background: rgba(228, 239, 231, 0.3);
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid var(--secondary-color);
+        text-align: center;
+    }
+
+    .overview-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .overview-label {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+
+    .overview-value {
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .description-section {
+        background: rgba(228, 239, 231, 0.3);
+        padding: 1rem;
+        border-radius: 12px;
+        border-left: 4px solid var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .description-text {
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .locations-section {
+        background: rgba(253, 250, 246, 0.8);
+        border: 1px solid var(--sidebar-border);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 0.5rem;
+    }
+
+    .location-card {
+        background: linear-gradient(135deg, rgba(253, 250, 246, 0.9) 0%, rgba(250, 241, 230, 0.9) 100%);
+        border: 2px solid var(--secondary-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .location-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        border-radius: 16px 16px 0 0;
+    }
+
+    .location-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-medium);
+        border-color: var(--primary-light);
+    }
+
+    .location-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .location-name {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .location-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .badge-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+    }
+
+    .badge-info {
+        background: linear-gradient(135deg, #1890ff, #40a9ff);
+        color: white;
+    }
+
+    .badge-secondary {
+        background: linear-gradient(135deg, var(--text-secondary), #94a3b8);
+        color: white;
+    }
+
+    .location-details {
+        margin-bottom: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .detail-item i {
+        color: var(--primary-color);
+        width: 18px;
+        text-align: center;
+    }
+
+    .expenses-section {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--secondary-color);
+    }
+
+    .expenses-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .expense-list {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .expense-item {
+        background: rgba(228, 239, 231, 0.3);
+        padding: 0.75rem;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-left: 3px solid var(--primary-color);
+    }
+
+    .expense-type {
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .expense-amount {
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .tags-section {
+        background: rgba(253, 250, 246, 0.8);
+        border: 1px solid var(--sidebar-border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+    }
+
+    .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag {
+        background: rgba(228, 239, 231, 0.5);
+        color: var(--text-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid var(--secondary-color);
+    }
+
+    .actions-section {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid var(--secondary-color);
+    }
+
+    .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-outline-secondary {
+        color: var(--text-secondary);
+        border: 2px solid var(--secondary-color);
+        background: transparent;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--secondary-color);
+        border-color: var(--primary-color);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: rgba(228, 239, 231, 0.3);
+        border: 2px dashed var(--secondary-color);
+        border-radius: 16px;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    /* Animations */
+    .location-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .overview-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .location-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .actions-section {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="itinerary-detail-page">
+    <h2 class="page-header">{{ itinerary.title }}</h2>
+    
+    <!-- Overview Section -->
+    <div class="itinerary-overview">
+        <div class="overview-grid">
+            <div class="overview-item">
+                <div class="overview-icon">📅</div>
+                <div class="overview-label">行程期間</div>
+                <div class="overview-value">
+                    {{ itinerary.start_date }} <br> ~ <br>{{ itinerary.end_date }}
+                </div>
+            </div>
+            <div class="overview-item">
+                <div class="overview-icon">💰</div>
+                <div class="overview-label">總預算</div>
+                <div class="overview-value">
+                    ${{ itinerary.budget|default:"未設定" }}
+                </div>
+            </div>
+            <div class="overview-item">
+                <div class="overview-icon">📍</div>
+                <div class="overview-label">地點數量</div>
+                <div class="overview-value">
+                    {{ itinerary.locations.count }} 個地點
+                </div>
+            </div>
+            <div class="overview-item">
+                <div class="overview-icon">👤</div>
+                <div class="overview-label">創建者</div>
+                <div class="overview-value">
+                    {{ itinerary.owner.username|default:"匿名" }}
+                </div>
+            </div>
+        </div>
+
+        {% if itinerary.description %}
+        <div class="description-section">
+            <h6 class="section-title">
+                <i class="ri-file-text-line"></i>
+                行程描述
+            </h6>
+            <p class="description-text">{{ itinerary.description }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Locations Section -->
+    <div class="locations-section">
+        <h5 class="section-title">
+            <i class="ri-map-pin-line"></i>
+            行程地點與支出
+        </h5>
+        
+        {% if itinerary.locations.all %}
+            {% for loc in itinerary.locations.all %}
+            <div class="location-card">
+                <div class="location-header">
+                    <h5 class="location-name">
+                        <i class="ri-map-pin-2-line"></i>
+                        {{ loc.name }}
+                    </h5>
+                    <div class="location-badges">
+                        <span class="badge badge-primary">{{ loc.get_travel_method_display }}</span>
+                        {% if loc.note %}
+                        <span class="badge badge-info">{{ loc.note }}</span>
+                        {% endif %}
+                        <span class="badge badge-secondary">{{ loc.visit_date|date:"m/d H:i" }}</span>
+                    </div>
+                </div>
+
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="ri-calendar-line"></i>
+                        <span>造訪時間：{{ loc.visit_date|date:"Y年m月d日 H:i" }}</span>
+                    </div>
+                    {% if loc.note %}
+                    <div class="detail-item">
+                        <i class="ri-sticky-note-line"></i>
+                        <span>交通備註：{{ loc.note }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="expenses-section">
+                    <h6 class="expenses-title">
+                        <i class="ri-money-dollar-circle-line"></i>
+                        支出明細
+                    </h6>
+                    {% if loc.expenses.all %}
+                    <div class="expense-list">
+                        {% for exp in loc.expenses.all %}
+                        <div class="expense-item">
+                            <span class="expense-type">{{ exp.get_expense_type_display }}</span>
+                            <span class="expense-amount">${{ exp.amount }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="ri-money-dollar-circle-line"></i>
+                        <p>此地點尚未記錄支出</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <i class="ri-map-pin-line"></i>
+            <p>此行程尚未設定地點資訊</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Tags Section -->
+    <div class="tags-section">
+        <h5 class="section-title">
+            <i class="ri-price-tag-3-line"></i>
+            行程標籤
+        </h5>
+        {% if itinerary.tags.all %}
+        <div class="tag-list">
+            {% for tag in itinerary.tags.all %}
+            <span class="tag">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="ri-price-tag-3-line"></i>
+            <p>此行程尚未添加標籤</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions-section">
+        <a href="{% url 'search' %}" class="btn btn-outline-secondary">
+            <i class="ri-arrow-left-line"></i>
+            返回搜尋
+        </a>
+        {% if user.is_authenticated and itinerary.owner.username == user.username %}
+        <a href="{% url 'edit_itinerary' itinerary.id %}" class="btn btn-primary">
+            <i class="ri-edit-line"></i>
+            編輯行程
+        </a>
+        {% elif user.is_authenticated %}
+        <form action="/copy/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="itinerary_id" value="{{ item.id }}">
+            <input type="hidden" name="owner_username" value="{{ item.owner.username }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="ri-file-copy-line"></i>
+                使用此模板
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

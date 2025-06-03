@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+{% block title %}公共模板{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        -webkit-background-clip: text;
+        /* -webkit-text-fill-color: transparent; */
+        background-clip: text;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .templates-intro {
+        background: rgba(253, 250, 246, 0.8);
+        border: 1px solid var(--sidebar-border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+        backdrop-filter: blur(5px);
+        text-align: center;
+    }
+
+    .intro-text {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+        font-size: 1.1rem;
+    }
+
+    .templates-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .template-card {
+        background: linear-gradient(135deg, rgba(253, 250, 246, 0.95) 0%, rgba(250, 241, 230, 0.9) 100%);
+        border: 2px solid var(--secondary-color);
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(5px);
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .template-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        border-radius: 20px 20px 0 0;
+    }
+
+    .template-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-large);
+        border-color: var(--primary-light);
+    }
+
+    .template-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--secondary-color);
+    }
+
+    .template-title {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 1.25rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .template-title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .template-title a:hover {
+        color: var(--primary-color);
+    }
+
+    .template-badge {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .template-details {
+        margin-bottom: 1.25rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .detail-item i {
+        color: var(--primary-color);
+        width: 18px;
+        text-align: center;
+    }
+
+    .template-description {
+        background: rgba(228, 239, 231, 0.3);
+        padding: 0.75rem;
+        border-radius: 12px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        border-left: 3px solid var(--primary-color);
+    }
+
+    .tag-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tag {
+        background: rgba(228, 239, 231, 0.5);
+        color: var(--text-primary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 1px solid var(--secondary-color);
+    }
+
+    .template-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--secondary-color);
+    }
+
+    .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        background: transparent;
+    }
+
+    .btn-outline-primary:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(253, 250, 246, 0.8);
+        border: 2px dashed var(--secondary-color);
+        border-radius: 20px;
+        margin-top: 2rem;
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state h3 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .templates-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .template-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .filter-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="template-list-page">
+    <h2 class="page-header">📋 公共行程模板</h2>
+    
+    <!-- Introduction Section -->
+    <div class="templates-intro">
+        <p class="intro-text">
+            <i class="ri-lightbulb-line"></i>
+            探索由社群分享的精彩行程模板，為你的旅程提供靈感！
+        </p>
+    </div>
+
+    {% if templates %}
+    <!-- Templates Grid -->
+    <div class="templates-grid">
+        {% for item in templates %}
+        <div class="template-card">
+            <div class="template-header">
+                <h5 class="template-title">
+                    <i class="ri-map-2-line"></i>
+                    <a href="{% url 'itinerary_detail' item.id %}">
+                        {{ item.title }}
+                    </a>
+                </h5>
+                <span class="template-badge">公共模板</span>
+            </div>
+            
+            <div class="template-details">
+                <div class="detail-item">
+                    <i class="ri-calendar-line"></i>
+                    <span>{{ item.start_date }} ~ {{ item.end_date }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span>預算：${{ item.budget|default:"未設定" }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="ri-map-pin-line"></i>
+                    <span>{{ item.locations.count|default:0 }} 個地點</span>
+                </div>
+                <div class="detail-item">
+                    <i class="ri-user-line"></i>
+                    <span>由 {{ item.owner.username|default:"匿名用戶" }} 分享</span>
+                </div>
+            </div>
+
+            {% if item.description %}
+            <div class="template-description">
+                <i class="ri-file-text-line"></i>
+                {{ item.description|truncatewords:20 }}
+            </div>
+            {% endif %}
+
+            {% if item.tags.all %}
+            <div class="tag-group">
+                {% for tag in item.tags.all %}
+                <span class="tag">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="template-actions">
+                <a href="{% url 'itinerary_detail' item.id %}" class="btn btn-outline-primary">
+                    <i class="ri-eye-line"></i>
+                    查看詳情
+                </a>
+                <form action="/copy/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="itinerary_id" value="{{ item.id }}">
+                    <input type="hidden" name="owner_username" value="{{ item.owner.username }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ri-file-copy-line"></i>
+                        複製模板
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <h3>目前沒有可用的公共模板</h3>
+        <p>成為第一個分享行程模板的用戶吧！</p>
+        <a href="{% url 'create' %}" class="btn btn-primary">
+            <i class="ri-add-line"></i>
+            創建第一個模板
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

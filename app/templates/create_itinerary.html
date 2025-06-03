@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+{% block title %}建立行程{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .form-section {
+        background: rgba(253, 250, 246, 0.8);
+        border: 1px solid var(--sidebar-border);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-light);
+        backdrop-filter: blur(5px);
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 0.5rem;
+    }
+
+    .location-entry {
+        border: 2px solid var(--secondary-color);
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, rgba(253, 250, 246, 0.9) 0%, rgba(250, 241, 230, 0.9) 100%);
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .location-entry::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        border-radius: 16px 16px 0 0;
+    }
+
+    .location-entry:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        border-color: var(--primary-light);
+    }
+
+    .expense-entry {
+        border-left: 3px solid var(--primary-color);
+        margin-left: 0;
+        padding: 1rem;
+        background: rgba(228, 239, 231, 0.3);
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .expense-entry:hover {
+        background: rgba(228, 239, 231, 0.5);
+        transform: translateX(5px);
+    }
+
+    .form-label {
+        color: var(--text-primary);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid var(--secondary-color);
+        border-radius: 12px;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(153, 188, 133, 0.25);
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+    }
+
+    .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #52c41a, #73d13d);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #389e0d, #52c41a);
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-secondary {
+        color: var(--text-secondary);
+        border: 2px solid var(--secondary-color);
+        background: transparent;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--secondary-color);
+        border-color: var(--primary-color);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+    }
+
+    .btn-danger, .btn-outline-danger {
+        background: linear-gradient(135deg, #ff4d4f, #ff7875);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-danger:hover, .btn-outline-danger:hover {
+        background: linear-gradient(135deg, #cf1322, #ff4d4f);
+        transform: translateY(-1px);
+    }
+
+    .remove-btn, .remove-expense-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 10;
+    }
+
+    .remove-expense-btn {
+        position: static;
+        margin-left: auto;
+    }
+
+    .expense-list {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--secondary-color);
+    }
+
+    .expense-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+    }
+
+    .expense-header h6 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 0.75rem;
+        align-items: end;
+    }
+
+    .input-group > * {
+        flex: 1;
+    }
+
+    .form-control-sm, .form-select-sm {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        border-radius: 8px;
+    }
+
+    .submit-section {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 2px solid var(--secondary-color);
+        margin-top: 2rem;
+    }
+
+    .submit-section .btn-primary {
+        padding: 1rem 3rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* Animation for new entries */
+    .location-entry.new-entry {
+        animation: slideInUp 0.5s ease-out;
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .expense-entry {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .input-group {
+            flex-direction: column;
+        }
+        
+        .remove-btn {
+            position: static;
+            margin-top: 1rem;
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="create-itinerary-page">
+    <h2 class="page-header">🗺️ 建立新的旅遊行程</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Basic Information Section -->
+        <div class="form-section">
+            <h5 class="section-title">
+                <i class="ri-information-line"></i>
+                基本資訊
+            </h5>
+            {{ form.as_p }}
+        </div>
+
+        <!-- Locations Section -->
+        <div class="form-section">
+            <h5 class="section-title">
+                <i class="ri-map-pin-line"></i>
+                地點資訊
+            </h5>
+            
+            <div id="locations-container">
+                <div class="location-entry">
+                    <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeLocation(this)">
+                        <i class="ri-close-line"></i>
+                    </button>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="ri-map-pin-2-line"></i>
+                            地點名稱
+                        </label>
+                        <input type="text" name="location_name[]" class="form-control" placeholder="如：東京塔、淺草寺">
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="ri-road-map-line"></i>
+                                旅遊方式
+                            </label>
+                            <select name="travel_method[]" class="form-select">
+                                <option value="">選擇方式</option>
+                                <option value="walk">🚶 步行</option>
+                                <option value="car">🚗 開車</option>
+                                <option value="plane">✈️ 搭飛機</option>
+                                <option value="boat">🚢 搭船</option>
+                                <option value="train">🚅 搭火車</option>
+                                <option value="bus">🚌 搭巴士</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="ri-sticky-note-line"></i>
+                                交通備註
+                            </label>
+                            <input type="text" name="transport_note[]" class="form-control" placeholder="如：地鐵、計程車">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="ri-calendar-line"></i>
+                            造訪日期
+                        </label>
+                        <input type="datetime-local" name="visit_date[]" class="form-control">
+                    </div>
+                    
+                    <div class="expense-list">
+                        <div class="expense-header">
+                            <h6>
+                                <i class="ri-money-dollar-circle-line"></i>
+                                支出記錄
+                            </h6>
+                            <button type="button" class="btn btn-success btn-sm" onclick="addExpense(this)">
+                                <i class="ri-add-line"></i>
+                                新增支出
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-secondary" onclick="addLocation()">
+                <i class="ri-add-circle-line"></i>
+                新增更多地點
+            </button>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section">
+            <button type="submit" class="btn btn-primary">
+                <i class="ri-save-line"></i>
+                建立行程
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+// 動態新增地點
+function addLocation() {
+    const container = document.getElementById('locations-container');
+    const original = container.querySelector('.location-entry');
+    const clone = original.cloneNode(true);
+    
+    // 清空欄位
+    clone.querySelectorAll('input, select').forEach(el => el.value = '');
+    clone.querySelector('.expense-list').innerHTML = `
+        <div class="expense-header">
+            <h6>
+                <i class="ri-money-dollar-circle-line"></i>
+                支出記錄
+            </h6>
+            <button type="button" class="btn btn-success btn-sm" onclick="addExpense(this)">
+                <i class="ri-add-line"></i>
+                新增支出
+            </button>
+        </div>
+    `;
+    
+    // 添加動畫效果
+    clone.classList.add('new-entry');
+    container.appendChild(clone);
+    
+    // 移除動畫類別
+    setTimeout(() => {
+        clone.classList.remove('new-entry');
+    }, 500);
+}
+
+// 刪除地點
+function removeLocation(btn) {
+    const entry = btn.closest('.location-entry');
+    const container = document.getElementById('locations-container');
+    if (container.children.length > 1) {
+        entry.style.animation = 'slideInUp 0.3s ease-out reverse';
+        setTimeout(() => {
+            container.removeChild(entry);
+        }, 300);
+    } else {
+        alert("至少要有一個地點！");
+    }
+}
+
+// 新增支出
+function addExpense(btn) {
+    const expenseList = btn.closest('.expense-list');
+    const idx = Array.from(document.getElementById('locations-container').children).indexOf(btn.closest('.location-entry'));
+    const expenseEntry = document.createElement('div');
+    expenseEntry.className = 'expense-entry';
+    expenseEntry.innerHTML = `
+        <div style="flex: 1; min-width: 120px;">
+            <select name="expense_type_${idx}[]" class="form-select form-select-sm">
+                <option value="meal">🍽️ 餐飲</option>
+                <option value="lodging">🏨 住宿</option>
+                <option value="transport">🚌 交通</option>
+                <option value="ticket">🎫 門票</option>
+                <option value="shopping">🛍️ 購物</option>
+                <option value="other">📝 其他</option>
+            </select>
+        </div>
+        <div style="flex: 1; min-width: 120px;">
+            <input type="number" step="0.01" name="expense_amount_${idx}[]" class="form-control form-control-sm" placeholder="金額">
+        </div>
+        <button type="button" class="btn btn-outline-danger btn-sm remove-expense-btn" onclick="this.parentNode.remove()">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+    `;
+    
+    expenseList.appendChild(expenseEntry);
+}
+</script>
+{% endblock content %}
