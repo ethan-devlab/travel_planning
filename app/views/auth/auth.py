@@ -14,8 +14,11 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # 自動登入
-            return redirect("search")  # 註冊成功後導向首頁或搜尋頁
+            login(request, user)
+            return redirect("search")
+        else:
+            messages.error(request, "註冊失敗，請檢查輸入的資料是否正確。")
+
     else:
         form = RegisterForm()
     return render(request, "auth/register.html", {"form": form})

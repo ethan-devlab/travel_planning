@@ -1,0 +1,53 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Calendar 頁面樣式 -->
+<link rel="stylesheet" href="{% static 'calendar.css' %}">
+
+<h1 style="text-align: center; font-size: 32pt; margin-bottom: 30px;">Calendar</h1>
+
+<div style="margin-bottom: 50px; justify-content: center; display: flex;">
+  <input type="text" id="event-name" placeholder="Event Name">
+  <input type="date" id="event-date">
+  <select id="event-color">
+    <option value="orange">Work</option>
+    <option value="blue">Sports</option>
+    <option value="yellow">Kids</option>
+    <option value="green">Other</option>
+  </select>
+  <button id="add-event-button" style="background-color: #a7dbcb;">Add Event</button>
+</div>
+
+<!-- 行事曆畫面 -->
+<div id="calendar"></div>
+
+<!-- Moment.js 套件 -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+
+<!-- 加入 CSRF Token 用的函式 -->
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+// 提供給 calendar.js 用
+window.csrftoken = csrftoken;
+</script>
+
+<!-- 主 JS -->
+<script src="{% static 'calendar.js' %}" defer></script>
+
+{% endblock %}

@@ -28,7 +28,10 @@ def search_itineraries(request):
             itineraries = itineraries.filter(budget__icontains=budget)
 
         if location:
-            itineraries = itineraries.filter(locations__name__icontains=location)
+            # three locations can be searched, two for the itinerary and one for the locations
+            itineraries = itineraries.filter(locations__name__icontains=location) | \
+                          itineraries.filter(title__icontains=location) | \
+                          itineraries.filter(location__icontains=location)
 
         if transport:
             itineraries = itineraries.filter(locations__note__icontains=transport)
@@ -41,4 +44,4 @@ def search_itineraries(request):
 
         itineraries = itineraries.distinct()
 
-    return render(request, 'search.html', {'form': form, 'results': itineraries})
+    return render(request, 'itinerary/search.html', {'form': form, 'results': itineraries})

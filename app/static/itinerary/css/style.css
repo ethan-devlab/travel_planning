@@ -312,3 +312,20 @@ body {
 .sidebar a.active i {
     color: white;
 }
+
+.alert {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.alert-success {
+    background-color: rgba(153, 188, 133, 0.1);
+    color: var(--text-primary);
+}
+
+.alert-error {
+    background-color: rgba(198, 91, 124, 0.1);
+    color: #C65B7C;
+}

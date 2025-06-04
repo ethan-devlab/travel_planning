@@ -19,9 +19,9 @@ def create_itinerary(request):
             itinerary.save()
             form.save_m2m()
 
-            custom_tags_str = request.POST.get("custom_tags", "")
-            if custom_tags_str:
-                tag_names = [tag.strip() for tag in custom_tags_str.split(",") if tag.strip()]
+            tags_str = request.POST.get("custom_tags", "")
+            if tags_str:
+                tag_names = [tag.strip() for tag in tags_str.split(",") if tag.strip()]
                 for name in tag_names:
                     tag_obj, _ = Tag.objects.get_or_create(name=name)
                     itinerary.tags.add(tag_obj)
@@ -34,8 +34,7 @@ def create_itinerary(request):
                         user = request.user.__class__.objects.get(username=username)
                         itinerary.collaborators.add(user)
                     except request.user.__class__.DoesNotExist:
-                        pass
-                        # messages.error(request, f"User '{username}' does not exist.")
+                        messages.error(request, f"User '{username}' does not exist.")
 
             location_names = request.POST.getlist('location_name[]')
             travel_methods = request.POST.getlist('travel_method[]')
@@ -68,4 +67,4 @@ def create_itinerary(request):
             return redirect('search')
     else:
         form = ItineraryForm()
-    return render(request, 'create_itinerary.html', {'form': form})
+    return render(request, 'itinerary/create_itinerary.html', {'form': form})

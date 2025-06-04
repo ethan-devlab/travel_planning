@@ -6,6 +6,14 @@ from django.contrib.auth.models import User
 
 
 class ItineraryForm(forms.ModelForm):
+    collaborators = forms.CharField(
+        required=False,
+        label="協作者",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': '請輸入協作者帳戶 (用逗號分隔)'
+        }))
+
     custom_tags = forms.CharField(
         required=False,
         label="標籤",
@@ -16,7 +24,7 @@ class ItineraryForm(forms.ModelForm):
 
     class Meta:
         model = Itinerary
-        fields = ['title', 'start_date', 'end_date', 'location', 'budget', 'description', 'is_public', 'status', 'collaborators']
+        fields = ['title', 'start_date', 'end_date', 'location', 'budget', 'description', 'is_public', 'status']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '請輸入行程標題'}),
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -26,7 +34,6 @@ class ItineraryForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': '請輸入行程描述'}),
             'is_public': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
-            'collaborators': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '請輸入協作者帳戶 (用逗號分隔)'}),
         }
         labels = {
             'title': '行程標題',
@@ -37,7 +44,6 @@ class ItineraryForm(forms.ModelForm):
             'is_public': '是否公開',
             'location': '地點 / 國家',
             'status': '行程狀態',
-            'collaborators': '協作者',
         }
 
 

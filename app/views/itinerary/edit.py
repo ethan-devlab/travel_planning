@@ -5,12 +5,17 @@ from ...models import Itinerary, Tag, Location, Expense
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import get_current_timezone
+from django.http import HttpResponseForbidden
+from django.contrib import messages
 from datetime import datetime
 
 
 @login_required
 def edit_itinerary(request, id):
-    itinerary = get_object_or_404(Itinerary, pk=id, owner=request.user)
+    itinerary = get_object_or_404(Itinerary, pk=id)
+    if not itinerary.is_public and itinerary.owner != request.user and request.user not in itinerary.collaborators.all():
+        return HttpResponseForbidden("You do not have permission to view this itinerary.")
+
     locations = itinerary.locations.all()
 
     if request.method == 'POST':
@@ -20,10 +25,22 @@ def edit_itinerary(request, id):
 
             # 更新標籤
             itinerary.tags.clear()
-            tag_str = request.POST.get('custom_tags', '')
-            for tag_name in [t.strip() for t in tag_str.split(',') if t.strip()]:
-                tag_obj, _ = Tag.objects.get_or_create(name=tag_name)
-                itinerary.tags.add(tag_obj)
+            tags_str = request.POST.get('custom_tags', '')
+            if tags_str:
+                tag_names = [t.strip() for t in tags_str.split(',') if t.strip()]
+                for tag_name in tag_names:
+                    tag_obj, _ = Tag.objects.get_or_create(name=tag_name)
+                    itinerary.tags.add(tag_obj)
+
+            collaborators_str = request.POST.get("collaborators", "")
+            if collaborators_str:
+                collaborator_usernames = [username.strip() for username in collaborators_str.split(",") if username.strip()]
+                for username in collaborator_usernames:
+                    try:
+                        user = request.user.__class__.objects.get(username=username)
+                        itinerary.collaborators.add(user)
+                    except request.user.__class__.DoesNotExist:
+                        messages.error(request, f"用戶 「{username}」 不存在.")
 
             # 清除原有地點與支出
             itinerary.locations.all().delete()
@@ -58,14 +75,16 @@ def edit_itinerary(request, id):
                                 amount=amount
                             )
 
-            return redirect('my_itineraries')
+            messages.success(request, f'行程 「{itinerary.title}」 已成功更新！')
+            return redirect(request.path)
     else:
         initial = {
-            'custom_tags': ', '.join([t.name for t in itinerary.tags.all()])
+            'custom_tags': ', '.join([t.name for t in itinerary.tags.all()]),
+            'collaborators': ', '.join([c.username for c in itinerary.collaborators.all()])
         }
         form = ItineraryForm(instance=itinerary, initial=initial)
 
-    return render(request, 'edit_itinerary.html', {
+    return render(request, 'itinerary/edit_itinerary.html', {
         'form': form,
         'locations': locations
     })

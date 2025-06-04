@@ -77,8 +77,10 @@ class ExchangeRateCache(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
 
-class ItineraryVersion(models.Model):
-    itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE, related_name='versions')
-    version_json = models.JSONField()
-    edited_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    edited_at = models.DateTimeField(auto_now_add=True)
+class Event(models.Model):
+    event_name = models.CharField(max_length=100)
+    date = models.DateField()
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.event_name} - {self.date}"

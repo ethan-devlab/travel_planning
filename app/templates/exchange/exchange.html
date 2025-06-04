@@ -1,0 +1,98 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+<style>
+    .exchange-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-end;  /* 確保下緣對齊 */
+        gap: 20px;
+        margin-top: 40px;
+    }
+
+    .currency-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 250px;
+    }
+
+    input[type="text"],
+    select,
+    .convert-button {
+        width: 250px;
+        height: 60px;
+        font-size: 20px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    select {
+        overflow-y: auto;
+    }
+
+    label {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .convert-button {
+        background-color: #a7dbcb;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    option {
+        padding: 5px 10px;
+        font-size: 16px;
+    }
+
+</style>
+
+<h1 style="text-align: center; font-size: 32pt;">Currency Exchange</h1>
+
+<form method="post" class="exchange-container">
+    {% csrf_token %}
+
+    <!-- 金額欄 -->
+    <div class="currency-section">
+        <label>Amount</label>
+        <input type="text" name="amount" placeholder="$3.00" required>
+    </div>
+
+    <!-- 從哪個幣別 -->
+    <div class="currency-section">
+        <label>From</label>
+        <select name="from_currency" >
+            {% for c in currencies %}
+                <option value="{{ c.code }}">{{ c.code }} - {{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- 兌換為哪個幣別 -->
+    <div class="currency-section">
+        <label>To</label>
+        <select name="to_currency" >
+            {% for c in currencies %}
+                <option value="{{ c.code }}">{{ c.code }} - {{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- 按鈕 -->
+    <div class="currency-section">
+        <!-- <label style="opacity: 0;">空白</label> -->
+        <button class="convert-button" type="submit">Convert</button>
+    </div>
+</form>
+
+{% if result %}
+    <h2 style="text-align: center;">{{ result }}</h2>
+{% endif %}
+
+{% endblock %}

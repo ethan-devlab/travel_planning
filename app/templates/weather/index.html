@@ -1,0 +1,37 @@
+{% extends 'basic.html' %}
+
+<!--<div class="index">-->
+<!--  <ul>-->
+<!--    <li><a class="w3-button w3-padding-large w3-white w3-border blog-button" href="{% url 'weather_app:Logout' %}" role="button">-->
+<!--      <span>登出</span></a></li>-->
+<!--  </ul>-->
+
+<!--  <form method="post" class="weather_input">-->
+<!--    {% csrf_token %}-->
+<!--    <input type="text" name="city1" placeholder="Enter city 1">-->
+<!--    <input type="text" name="city2" placeholder="Enter city 2">-->
+<!--    <button type="submit" class="show">Show Weather</button>-->
+<!--  </form>-->
+<!--</div>-->
+
+
+{% block content %}
+
+    {% include 'input.html' %}
+
+  <div class="comparison-container">
+
+    {% if weather_data1 %}
+      <div class="city-container">
+        {% include 'city_weather.html' with weather_data=weather_data1 daily_forecasts=daily_forecasts1 %}
+      </div>
+    {% endif %}
+      <br>
+    {% if weather_data2 %}
+      <div class="city-container">
+        {% include 'city_weather.html' with weather_data=weather_data2 daily_forecasts=daily_forecasts2 %}
+      </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

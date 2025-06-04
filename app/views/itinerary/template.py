@@ -11,7 +11,7 @@ from django.utils.timezone import get_current_timezone
 
 def template_list(request):
     templates = Itinerary.objects.filter(is_public=True)
-    return render(request, 'template_list.html', {'templates': templates})
+    return render(request, 'itinerary/template_list.html', {'templates': templates})
 
 
 @login_required

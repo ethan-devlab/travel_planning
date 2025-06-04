@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap');
+* {
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'Noto Serif TC', serif;
+  background-color: #f2f2f2;
+  text-align: left;
+  padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+}
+
+.index{
+  font-family: 'Noto Serif TC', serif;
+  margin-top: 30px;
+  width: 100%;
+  height: auto;
+}
+
+.title{
+  font-family: 'Noto Serif TC', serif;
+  font-size: 20pt;
+  color: black;
+}
+
+.welcome{
+  font-family: 'Noto Serif TC', serif;
+  font-size: 25pt;
+}
+
+form {
+  font-family: 'Noto Serif TC', serif;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  display: block;
+  line-height: 2em;
+  font-size: 13pt;
+}
+
+.city-container{
+  font-family: 'Noto Serif TC', serif;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.weather_input {
+  font-family: 'Noto Serif TC', serif;
+  border: none;
+  color: #444;
+  font-size: 20px;
+  padding: 1rem 2rem;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.weather_input::placeholder {
+  font-family: 'Noto Serif TC', serif;
+  color: #d5d5d5;
+}
+
+.weather_input:focus {
+  outline-color: rgb(179, 131, 226);
+}
+
+input{
+  font-family: 'Noto Serif TC', serif;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 7vh;
+  outline-color: rgb(179, 131, 226);
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  width: 250px;
+  height: auto;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.auth {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100px;
+  height: auto;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.signup {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  width: 100px;
+  height: auto;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.show {
+  background-color: #a7dbcb;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  width: 250px;
+  height: auto;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover{
+    box-shadow: 0 0 25px lightblue;
+    transition: all 0.5s;
+}
+
+button:active{
+   padding: 5px 0px 0px 5px;
+}
+
+ul {
+  display: block;
+  position: relative;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#welcome{
+  float: left;
+}
+
+#logout{
+  float: right;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+
+.blog-button {
+  border-radius: 8px;
+  border: none;
+  color: #000000;
+  text-align: center;
+  padding: 20px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.blog-button span {
+  font-size: 13pt;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.blog-button span::after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.blog-button:hover span {
+  padding-right: 25px;
+  color: black;
+}
+
+.blog-button:hover span::after {
+  opacity: 1;
+  right: 0;
+	}
+
+.weather_container1{
+  font-family: 'Noto Serif TC', serif;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  context-align: center;
+  flex-wrap: wrap;
+}
+
+.weather-now {
+  justify-content: center;
+  text-align: center;
+  font-family: 'Noto Serif TC', serif;
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 0px;
+  margin: 10px;
+  width: calc(100% / 3 - 20px);
+  box-sizing: border-box;
+}
+
+.datetime{
+  padding-left: 8px;
+  border-radius: 7px 7px 0 0;
+  background-color: lightblue;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+ }
+
+.main-weather-img{
+  float: right;
+  text-align: right;
+}
+
+.main-weather-text{
+  padding-top: 2%;
+  float: left;
+  text-align: left;
+}
+.datetime ul li{
+  display: inline;
+}
+
+table, th, td {
+  width: auto;
+  text-align: left;
+  border: none;
+  border-collapse: collapse;
+}
+
+.forecast-container {
+  font-family: 'Noto Serif TC', serif;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.forecast {
+  font-family: 'Noto Serif TC', serif;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px;
+  width: calc(100% / 5 - 20px);
+  box-sizing: border-box;
+}
+
+.flip-card {
+  font-family: 'Noto Serif TC', serif;
+  background-color: transparent;
+  height: 310px;
+  perspective: 1000px;
+  padding: 10px;
+  margin: 10px;
+  width: calc(100% / 5 - 20px);
+  box-sizing: border-box;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 7px;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  padding: 10px;
+  border-radius: 7px;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: #fff;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #fff;
+  color: black;
+  transform: rotateY(180deg);
+}
+
+@media (max-width: 767px) {
+  .forecast {
+    width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .forecast {
+    width: 100%;
+  }
+}
+
+

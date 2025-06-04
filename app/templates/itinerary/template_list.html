@@ -325,15 +325,22 @@
                     <i class="ri-eye-line"></i>
                     查看詳情
                 </a>
+                {% if user.is_authenticated and item.owner.username == user.username %}
+                <a href="{% url 'edit_itinerary' item.id %}" class="btn btn-primary">
+                    <i class="ri-edit-line"></i>
+                    編輯行程
+                </a>
+                {% elif user.is_authenticated %}
                 <form action="/copy/" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="itinerary_id" value="{{ item.id }}">
                     <input type="hidden" name="owner_username" value="{{ item.owner.username }}">
                     <button type="submit" class="btn btn-primary">
                         <i class="ri-file-copy-line"></i>
-                        複製模板
+                        使用此模板
                     </button>
                 </form>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

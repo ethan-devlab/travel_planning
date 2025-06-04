@@ -1,0 +1,113 @@
+{% if weather_data %}
+        <p style="font-size:30pt;"><b>{{ weather_data.city }}, {{ weather_data.country }}</b></p>
+     <p style="font-size:20pt">Weather Now</p>
+    <div class="weather_container1">
+        <div class="weather-now">
+            <div class="datetime">
+                <ul>
+                    <li class="main-weather-text"><span style="font-size:18pt;">{{ weather_data.time }}<span style="font-size:10pt">(Last updated)</span>
+                    <p style="font-size:12pt;">{{ weather_data.date }}</p>
+                    <p style="font-size:14pt">{{ weather_data.description }}</p></span></li>
+                    <li class="main-weather-img"><span><img src="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/{{ weather_data.icon }}.png" alt="{{ weather_data.description }}"></span></li>
+                </ul>
+            </div>
+            <table>
+                  <tr>
+                    <th rowspan="6" style="text-align: center; width: 57%;"><span style="font-size:20pt;">{{ weather_data.temperature }}°C</span></th>
+                    <th style="border-bottom: 1px solid darkcyan;">Details</th>
+                    <th style="border-bottom: 1px solid darkcyan;"></th>
+                  </tr>
+                  <tr>
+                    <td>Feels like</td>
+                    <td style="padding-left: 5px">{{ weather_data.feels_like }} °C</td>
+                  </tr>
+                  <tr>
+                    <td>Wind</td>
+                    <td style="padding-left: 5px">{{ weather_data.wind_speed }} km/h</td>
+                  </tr>
+                  <tr>
+                    <td>Humidity</td>
+                    <td style="padding-left: 5px">{{ weather_data.humidity }} %</td>
+                  </tr>
+                  <tr>
+                    <td>Visibility</td>
+                    <td style="padding-left: 5px">{{ weather_data.visibility }} km</td>
+                  </tr>
+                  <tr>
+                    <td>Cloudiness&nbsp&nbsp</td>
+                    <td style="padding-left: 5px">{{ weather_data.cloudiness }} %</td>
+                  </tr>
+            </table>
+
+        </div>
+    </div>
+<!--<div id="openweathermap-widget-11"></div>-->
+<!--<script src='//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script><script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];  window.myWidgetParam.push({id: 11,cityid: '{{ weather_data.id }}',appid: '{{ weather_data.api }}',units: 'metric',containerid: 'openweathermap-widget-11'});  (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();</script>-->
+{% endif %}
+<br>
+{% if daily_forecasts %}
+    <p style="font-size:20pt">{{ weather_data.city }}'s 3-Day Forecast</p>
+    <div class="forecast-container">
+        {% for forecast in daily_forecasts %}
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+<!--                <div class="forecast">-->
+                    <p style="font-size:15pt">{{ forecast.day }}</p>
+                    <p style="font-size:13pt">{{ forecast.date }}  {{ forecast.time }}</p>
+                    <p>About {{ forecast.temperature }}°C</p>
+                    <p>{{ forecast.description }}</p>
+    <!--                <img src="http://openweathermap.org/img/wn/{{ forecast.icon }}@2x.png" alt="{{ forecast.description }}">-->
+                    <img src="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/{{ forecast.icon }}.png" alt="{{ forecast.description }}}">
+<!--                </div>-->
+            </div>
+            <div class="flip-card-back">
+            <table>
+                  <tr>
+                    <th style="border-bottom: 1px solid darkcyan;">Details</th>
+                    <th style="border-bottom: 1px solid darkcyan;"></th>
+                  </tr>
+                  <tr>
+                    <td>Feels like</td>
+                    <td style="padding-left: 5px">{{ forecast.feels_like }} °C</td>
+                  </tr>
+                  <tr>
+                    <td>Min</td>
+                    <td style="padding-left: 5px">{{ forecast.temp_min }} °C</td>
+                  </tr>
+                  <tr>
+                    <td>Max</td>
+                    <td style="padding-left: 5px">{{ forecast.temp_max }} °C</td>
+                  </tr>
+                  <tr>
+                    <td>Wind Speed</td>
+                    <td style="padding-left: 5px">{{ forecast.wind_speed }} km/h</td>
+                  </tr>
+                  <tr>
+                    <td>Wind Gust</td>
+                    <td style="padding-left: 5px">{{ forecast.wind_gust }} km/h</td>
+                  </tr>
+                  <tr>
+                    <td>Humidity</td>
+                    <td style="padding-left: 5px">{{ forecast.humidity }} %</td>
+                  </tr>
+                  <tr>
+                    <td>Visibility</td>
+                    <td style="padding-left: 5px">{{ forecast.visibility }} km</td>
+                  </tr>
+                  <tr>
+                    <td>Cloudiness&nbsp&nbsp</td>
+                    <td style="padding-left: 5px">{{ forecast.cloudiness }} %</td>
+                  </tr>
+                  <tr>
+                    <td>Prob of precip</td>
+                    <td style="padding-left: 5px">{{ forecast.pop }} %</td>
+                  </tr>
+            </table>
+
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}

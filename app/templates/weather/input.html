@@ -1,0 +1,29 @@
+<div class="index">
+  <!-- <ul>
+    <li id="welcome">
+      {% if user.is_authenticated %}
+  <p class="welcome">Welcome {{ user }}!</p>
+  {% endif %}</li>
+    <li id="logout"><a class="w3-button w3-padding-large w3-white w3-border blog-button" href="{% url 'Logout' %}" role="button">
+      <span>登出</span></a></li>
+  </ul> -->
+  <div style="text-align: center">
+  <p style="font-size: 32pt">Weather Nowcast and Forecasts</p>
+  </div>
+  <form method="post" class="weather_input">
+    {% csrf_token %}
+    <input type="text" name="city1" placeholder="Enter city or District">
+    <!-- <input type="text" name="city2" placeholder="Enter city 2"> -->
+    <button type="submit" class="show">Show Weather</button>
+  </form>
+
+    {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            {{message}}
+          </div>
+          {% endfor %}
+
+    {% endif %}
+
+</div>

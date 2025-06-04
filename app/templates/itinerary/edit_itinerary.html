@@ -335,7 +335,13 @@
 {% block content %}
 <div class="edit-itinerary-page">
     <h2 class="page-header">✏️ 編輯旅遊行程</h2>
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <form method="post">
         {% csrf_token %}
 

@@ -16,6 +16,7 @@ urlpatterns = [
     path('register/', auth.register, name='register'),
     path('itinerary/<int:id>/', detail.itinerary_detail, name='itinerary_detail'),
     path('my-itineraries/', my_iter.my_itineraries, name='my_itineraries'),
+    path('shared-itineraries/', my_iter.shared_itineraries, name='shared_itineraries'),
     path('edit/<int:id>/', edit.edit_itinerary, name='edit_itinerary'),
     path('delete/<int:id>/', delete.delete_itinerary, name='delete_itinerary'),
 ]
