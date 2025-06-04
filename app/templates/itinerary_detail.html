@@ -403,6 +403,25 @@
             <p class="description-text">{{ itinerary.description }}</p>
         </div>
         {% endif %}
+
+        {% if itinerary.collaborators.all %}
+        <div class="description-section">
+            <h6 class="section-title">
+                <i class="ri-team-line"></i>
+                協作者
+            </h6>
+            <p class="description-text">
+                {% for collaborator in itinerary.collaborators.all %}
+                    {{ collaborator.username }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="ri-team-line"></i>
+            <p>此行程尚未添加協作者</p>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Locations Section -->
