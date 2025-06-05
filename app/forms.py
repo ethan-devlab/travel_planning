@@ -89,7 +89,7 @@ class RegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
-class LoginForm(AuthenticationForm):
+class LoginForm(forms.Form):
     username = forms.CharField(
         max_length=24,
         required=True,
@@ -107,33 +107,42 @@ class LoginForm(AuthenticationForm):
         label_suffix=""  # clear colon
     )
 
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get("username")
-        password = cleaned_data.get("password")
-
-        if not username:
-            raise forms.ValidationError("帳戶不能為空")
-        if not password:
-            raise forms.ValidationError("密碼不能為空")
-
-
 class SearchForm(forms.Form):
     q = forms.CharField(
         required=False,
         label="關鍵字",
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '輸入關鍵字'})
     )
-    travel_method = forms.CharField(required=False, label="旅遊方式")
-    budget = forms.CharField(required=False, label="預算")
-    location = forms.CharField(required=False, label="地點")
-    transport = forms.CharField(required=False, label="交通")
-    start_date = forms.DateField(required=False, label="開始日期", widget=forms.DateInput(attrs={'type': 'date'}))
-    end_date = forms.DateField(required=False, label="結束日期", widget=forms.DateInput(attrs={'type': 'date'}))
+    travel_method = forms.CharField(
+        required=False, 
+        label="旅遊方式",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '如步行、開車、搭飛機等'})
+    )
+    budget = forms.CharField(
+        required=False, 
+        label="預算",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '輸入預算'})
+    )
+    location = forms.CharField(
+        required=False, 
+        label="地點/國家",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '如台灣、韓國等'})
+    )
+    transport = forms.CharField(
+        required=False, 
+        label="交通",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '如地鐵、巴士等'})
+    )
+    start_date = forms.DateField(
+        required=False, 
+        label="開始日期", 
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    end_date = forms.DateField(
+        required=False, 
+        label="結束日期", 
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
 
 
 class ExpenseForm(forms.ModelForm):

@@ -3,29 +3,58 @@
 {% block title %}登入 TravelPlan{% endblock %}
 
 {% block content %}
-    <div class="card p-4">
-        <h4 class="card-title mb-3 text-center">🔐 登入 TravelPlan</h4>
+    <div class="card">
+        <h4 class="card-title">
+            <i class="ri-login-box-line"></i>
+            歡迎回來
+        </h4>
+        
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <div class="mb-3">
-                {{ form.username.label_tag }}
-                {{ form.username }}
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.username.id_for_label }}">
+                    <i class="ri-user-line"></i>
+                    使用者名稱
+                </label>
+                <input type="text" 
+                       class="form-control" 
+                       id="{{ form.username.id_for_label }}" 
+                       name="{{ form.username.name }}" 
+                       placeholder="請輸入您的使用者名稱"
+                       required>
             </div>
-            <div class="mb-3">
-                {{ form.password.label_tag }}
-                {{ form.password }}
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.password.id_for_label }}">
+                    <i class="ri-lock-line"></i>
+                    密碼
+                </label>
+                <input type="password" 
+                       class="form-control" 
+                       id="{{ form.password.id_for_label }}" 
+                       name="{{ form.password.name }}" 
+                       placeholder="請輸入您的密碼"
+                       required>
             </div>
+            
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}" role="alert">
+                        <i class="ri-error-warning-line"></i>
                         {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
-            <button type="submit" class="btn btn-primary w-100">登入</button>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="ri-login-box-line"></i>
+                登入帳號
+            </button>
         </form>
-        <div class="text-center mt-3">
-            沒有帳號？<a href="{% url 'register' %}">立即註冊</a>
+        
+        <div class="auth-link">
+            還沒有帳號嗎？<a href="{% url 'register' %}">立即註冊</a>
         </div>
     </div>
 {% endblock %}

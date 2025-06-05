@@ -1,53 +1,116 @@
-{% extends 'basic.html' %}
+{% extends 'common/base.html' %}
 {% load static %}
 
+{% block title %}行事曆{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'calendar/css/calendar.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css">
+{% endblock %}
+
+
 {% block content %}
-<!-- Calendar 頁面樣式 -->
-<link rel="stylesheet" href="{% static 'calendar.css' %}">
+{% csrf_token %}
+<meta name="csrf-token" content="{{ csrf_token }}">
+<div class="calendar-container">
+    <h2 class="page-header">📅 旅行行事曆</h2>
 
-<h1 style="text-align: center; font-size: 32pt; margin-bottom: 30px;">Calendar</h1>
+    <!-- Event Form Section -->
+    <div class="event-form-section">
+        <div class="event-form">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="ri-calendar-event-line"></i>
+                    活動名稱
+                </label>
+                <input type="text" id="event-name" class="form-control" placeholder="輸入活動名稱">
+            </div>
 
-<div style="margin-bottom: 50px; justify-content: center; display: flex;">
-  <input type="text" id="event-name" placeholder="Event Name">
-  <input type="date" id="event-date">
-  <select id="event-color">
-    <option value="orange">Work</option>
-    <option value="blue">Sports</option>
-    <option value="yellow">Kids</option>
-    <option value="green">Other</option>
-  </select>
-  <button id="add-event-button" style="background-color: #a7dbcb;">Add Event</button>
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="ri-calendar-line"></i>
+                    日期
+                </label>
+                <input type="date" id="event-date" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="ri-palette-line"></i>
+                    類別
+                </label>
+                <select id="event-color" class="form-select">
+                    <option value="orange">工作</option>
+                    <option value="blue">運動</option>
+                    <option value="yellow">家庭</option>
+                    <option value="green">旅行</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button id="add-event-button" class="add-event-btn">
+                    <i class="ri-add-line"></i>
+                    新增活動
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Event Section -->
+    <div class="delete-section">
+        <h3 class="section-title">
+            <i class="ri-delete-bin-line"></i>
+            刪除活動
+        </h3>
+        <p class="section-description">點擊日曆中的活動，然後點擊刪除按鈕來移除活動</p>
+        <div class="delete-instructions">
+            <div class="instruction-item">
+                <i class="ri-mouse-line"></i>
+                <span>點擊日期查看活動</span>
+            </div>
+            <div class="instruction-item">
+                <i class="ri-delete-bin-2-line"></i>
+                <span>點擊活動右側的刪除圖示</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Legend Section -->
+    <div class="legend-section">
+        <h3 class="section-title">
+            <i class="ri-palette-line"></i>
+            活動類別
+        </h3>
+        <div class="legend-grid">
+            <div class="legend-item">
+                <div class="legend-color orange"></div>
+                <span class="legend-text">工作</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color blue"></div>
+                <span class="legend-text">運動</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color yellow"></div>
+                <span class="legend-text">家庭</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color green"></div>
+                <span class="legend-text">旅行</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Wrapper -->
+    <div class="calendar-wrapper">
+        <div id="calendar"></div>
+    </div>
 </div>
-
-<!-- 行事曆畫面 -->
-<div id="calendar"></div>
 
 <!-- Moment.js 套件 -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
 
-<!-- 加入 CSRF Token 用的函式 -->
-<script>
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
-
-// 提供給 calendar.js 用
-window.csrftoken = csrftoken;
-</script>
-
 <!-- 主 JS -->
-<script src="{% static 'calendar.js' %}" defer></script>
+<script src="{% static 'calendar/js/calendar.js' %}" defer></script>
 
 {% endblock %}

@@ -27,7 +27,7 @@ def register(request):
 @require_http_methods(["GET", "POST"])
 def login_view(request):
     if request.method == "POST":
-        form = LoginForm(request, data=request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")

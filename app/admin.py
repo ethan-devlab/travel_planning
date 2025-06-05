@@ -1,6 +1,6 @@
 # coding=utf-8
 from django.contrib import admin
-from .models import Itinerary, Tag, Location, Expense, WeatherCache, ExchangeRateCache
+from .models import Itinerary, Tag, Location, Expense, Event
 
 
 # Register your models here.
@@ -23,5 +23,4 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Expense)
-admin.site.register(ExchangeRateCache)
-admin.site.register(WeatherCache)
+admin.site.register(Event)

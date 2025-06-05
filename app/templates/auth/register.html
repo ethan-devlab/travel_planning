@@ -3,37 +3,114 @@
 {% block title %}註冊 TravelPlan{% endblock %}
 
 {% block content %}
-    <div class="card p-4">
-        <h4 class="card-title mb-3 text-center">📝 註冊 TravelPlan 帳號</h4>
+    <div class="card">
+        <h4 class="card-title">
+            <i class="ri-user-add-line"></i>
+            建立新帳號
+        </h4>
+        
         <form method="post" action="{% url 'register' %}">
             {% csrf_token %}
-            <div class="mb-3">
-                {{ form.username.label_tag }}
-                {{ form.username }}
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.username.id_for_label }}">
+                    <i class="ri-user-line"></i>
+                    使用者名稱
+                </label>
+                <input type="text" 
+                       class="form-control" 
+                       id="{{ form.username.id_for_label }}" 
+                       name="{{ form.username.name }}" 
+                       placeholder="請輸入使用者名稱"
+                       value="{{ form.username.value|default:'' }}"
+                       required>
+                {% if form.username.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-            <div class="mb-3">
-                {{ form.email.label_tag }}
-                {{ form.email }}
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.email.id_for_label }}">
+                    <i class="ri-mail-line"></i>
+                    電子郵件
+                </label>
+                <input type="email" 
+                       class="form-control" 
+                       id="{{ form.email.id_for_label }}" 
+                       name="{{ form.email.name }}" 
+                       placeholder="請輸入您的電子郵件"
+                       value="{{ form.email.value|default:'' }}"
+                       required>
+                {% if form.email.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.email.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-            <div class="mb-3">
-                {{ form.password1.label_tag }}
-                {{ form.password1 }}
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.password1.id_for_label }}">
+                    <i class="ri-lock-line"></i>
+                    密碼
+                </label>
+                <input type="password" 
+                       class="form-control" 
+                       id="{{ form.password1.id_for_label }}" 
+                       name="{{ form.password1.name }}" 
+                       placeholder="請輸入密碼"
+                       required>
+                {% if form.password1.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.password1.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-            <div class="mb-3">
-                {{ form.password2.label_tag }}
-                {{ form.password2 }}
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.password2.id_for_label }}">
+                    <i class="ri-lock-line"></i>
+                    確認密碼
+                </label>
+                <input type="password" 
+                       class="form-control" 
+                       id="{{ form.password2.id_for_label }}" 
+                       name="{{ form.password2.name }}" 
+                       placeholder="請再次輸入密碼"
+                       required>
+                {% if form.password2.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.password2.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}" role="alert">
+                        <i class="ri-information-line"></i>
                         {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
-            <button type="submit" class="btn btn-primary w-100">註冊</button>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="ri-user-add-line"></i>
+                建立帳號
+            </button>
         </form>
-        <div class="text-center mt-3">
-            已有帳號？<a href="{% url 'login' %}">立即登入</a>
+        
+        <div class="auth-link">
+            已經有帳號了？<a href="{% url 'login' %}">立即登入</a>
         </div>
     </div>
 {% endblock %}
