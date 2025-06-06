@@ -41,7 +41,7 @@ def create_itinerary(request):
             transport_notes = request.POST.getlist('transport_note[]')
             visit_dates = request.POST.getlist('visit_date[]')
             tz = get_current_timezone()
-
+            print(tz)
             for i in range(len(location_names)):
                 if location_names[i] and travel_methods[i] and visit_dates[i]:
                     loc = Location.objects.create(
@@ -49,7 +49,7 @@ def create_itinerary(request):
                         name=location_names[i],
                         travel_method=travel_methods[i],
                         note=transport_notes[i],
-                        visit_date=datetime.astimezone(tz).strftime(visit_dates[i], "%Y-%m-%dT%H:%M"),
+                        visit_date=datetime.astimezone(tz).strptime(visit_dates[i], "%Y-%m-%dT%H:%M"),
                         latitude=0.0,
                         longitude=0.0
                     )
