@@ -41,7 +41,7 @@ Make sure you have done the actions above to get into virtual environment, you w
 
 Next, install the required packages.
 ```
-cd HahaLife
+cd travel_planning
 pip3 install -r requirements.txt
 ```
 Finally, run
