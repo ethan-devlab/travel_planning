@@ -49,3 +49,7 @@ Finally, run
 python3 manage.py runserver
 ```
 The default url will be `127.0.0.1:8000/`
+
+## Account Info
+* Admin: admin
+* Password: 123
