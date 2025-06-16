@@ -1,8 +1,5 @@
 .page-header {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-    -webkit-background-clip: text;
-    /* -webkit-text-fill-color: transparent; */
-    background-clip: text;
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 2rem;

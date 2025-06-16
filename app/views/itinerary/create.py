@@ -8,7 +8,6 @@ from django.utils.timezone import get_current_timezone
 from django.contrib import messages
 from datetime import datetime
 
-
 @login_required
 def create_itinerary(request):
     if request.method == 'POST':
@@ -49,7 +48,7 @@ def create_itinerary(request):
                         name=location_names[i],
                         travel_method=travel_methods[i],
                         note=transport_notes[i],
-                        visit_date=datetime.astimezone(tz).strftime(visit_dates[i], "%Y-%m-%dT%H:%M"),
+                        visit_date=datetime.strptime(visit_dates[i], "%Y-%m-%dT%H:%M").astimezone(tz),
                         latitude=0.0,
                         longitude=0.0
                     )
@@ -64,7 +63,7 @@ def create_itinerary(request):
                                 amount=amount
                             )
 
-            return redirect('search')
+            return redirect('itinerary_detail', id=itinerary.id)
     else:
         form = ItineraryForm()
     return render(request, 'itinerary/create_itinerary.html', {'form': form})

@@ -54,13 +54,12 @@ def edit_itinerary(request, id):
 
             for i in range(len(location_names)):
                 if location_names[i] and travel_methods[i] and visit_dates[i]:
-                    dt = datetime.strptime(visit_dates[i], "%Y-%m-%dT%H:%M").astimezone(tz)
                     loc = Location.objects.create(
                         itinerary=itinerary,
                         name=location_names[i],
                         travel_method=travel_methods[i],
                         note=transport_notes[i],
-                        visit_date=dt,
+                        visit_date=datetime.strptime(visit_dates[i], "%Y-%m-%dT%H:%M").astimezone(tz),
                         latitude=0.0,
                         longitude=0.0,
                     )

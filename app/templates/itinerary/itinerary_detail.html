@@ -172,8 +172,8 @@
         {% elif user.is_authenticated %}
         <form action="/copy/" method="post">
             {% csrf_token %}
-            <input type="hidden" name="itinerary_id" value="{{ item.id }}">
-            <input type="hidden" name="owner_username" value="{{ item.owner.username }}">
+            <input type="hidden" name="itinerary_id" value="{{ itinerary.id }}">
+            <input type="hidden" name="owner_username" value="{{ itinerary.owner.username }}">
             <button type="submit" class="btn btn-primary">
                 <i class="ri-file-copy-line"></i>
                 使用此模板
