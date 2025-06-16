@@ -11,7 +11,6 @@
 <div class="weather-page">
     <h2 class="page-header">☁️ 查詢天氣及未來3天預報</h2>
     
-    <!-- Search Section -->
     <div class="weather-search-section">
         <form method="post" class="search-form">
             {% csrf_token %}
@@ -25,7 +24,6 @@
         </form>
     </div>
 
-    <!-- Alert Messages -->
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }}" role="alert">
@@ -34,7 +32,6 @@
         {% endfor %}
     {% endif %}
 
-    <!-- Current Weather Section -->
     {% if weather_data %}
     <div class="current-weather-section">
         <h3 class="city-title">{{ weather_data.city }}, {{ weather_data.country }}</h3>
@@ -92,7 +89,6 @@
     </div>
     {% endif %}
 
-    <!-- Forecast Section -->
     {% if daily_forecasts %}
     <div class="forecast-section">
         <p class="section-subtitle">{{ weather_data.city }} 未來3天預報</p>

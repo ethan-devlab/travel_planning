@@ -23,7 +23,7 @@ def edit_itinerary(request, id):
         if form.is_valid():
             itinerary = form.save()
 
-            # 更新標籤
+            # update tags and collaborators
             itinerary.tags.clear()
             tags_str = request.POST.get('custom_tags', '')
             if tags_str:
@@ -42,10 +42,10 @@ def edit_itinerary(request, id):
                     except request.user.__class__.DoesNotExist:
                         messages.error(request, f"用戶 「{username}」 不存在.")
 
-            # 清除原有地點與支出
+            # clear existing locations and expenses
             itinerary.locations.all().delete()
 
-            # 地點資料
+            # locations and expenses
             location_names = request.POST.getlist('location_name[]')
             travel_methods = request.POST.getlist('travel_method[]')
             transport_notes = request.POST.getlist('transport_note[]')
@@ -64,7 +64,7 @@ def edit_itinerary(request, id):
                         latitude=0.0,
                         longitude=0.0,
                     )
-                    # 對應支出項目
+                    # expenses for this location
                     expense_types = request.POST.getlist(f'expense_type_{i}[]')
                     expense_amounts = request.POST.getlist(f'expense_amount_{i}[]')
                     for etype, amount in zip(expense_types, expense_amounts):

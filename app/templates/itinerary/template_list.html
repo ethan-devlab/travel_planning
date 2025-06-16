@@ -11,7 +11,6 @@
 <div class="template-list-page">
     <h2 class="page-header">📋 公共行程模板</h2>
     
-    <!-- Introduction Section -->
     <div class="templates-intro">
         <p class="intro-text">
             <i class="ri-lightbulb-line"></i>
@@ -20,7 +19,6 @@
     </div>
 
     {% if templates %}
-    <!-- Templates Grid -->
     <div class="templates-grid">
         {% for item in templates %}
         <div class="template-card">
@@ -94,7 +92,6 @@
         {% endfor %}
     </div>
     {% else %}
-    <!-- Empty State -->
     <div class="empty-state">
         <div class="empty-state-icon">📋</div>
         <h3>目前沒有可用的公共模板</h3>

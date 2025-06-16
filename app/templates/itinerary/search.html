@@ -11,7 +11,6 @@
 <div class="search-page">
     <h2 class="page-header">🔍 搜尋旅遊行程</h2>
     
-    <!-- Quick Filters -->
     <div class="quick-filters">
         <h6>
             <i class="ri-filter-line"></i>
@@ -27,7 +26,6 @@
         </div>
     </div>
 
-    <!-- Search Form -->
     <div class="search-section">
         <h5 class="section-title">
             <i class="ri-search-line"></i>
@@ -97,7 +95,6 @@
         </form>
     </div>
 
-    <!-- Search Results -->
     {% if results %}
     <div class="results-section">
         <h5 class="results-header">
@@ -137,12 +134,10 @@
             {% endif %}
 
             <div class="tag-group">
-                <!-- Tags -->
                 {% for tag in itinerary.tags.all %}
                 <span class="badge bg-secondary">{{ tag.name }}</span>
                 {% endfor %}
                 
-                <!-- Location info -->
                 {% with itinerary.locations.first as loc %}
                 {% if loc %}
                 <span class="badge bg-primary">{{ loc.get_travel_method_display }}</span>

@@ -300,7 +300,7 @@
     }
   }
 
-  // Delete event method - FIXED
+  // Delete event
   Calendar.prototype.deleteEvent = function(eventId, eventElement) {
     if (!confirm('確定要刪除此活動嗎？')) {
       return;
@@ -383,7 +383,6 @@
 }();
 
 !function() {
-  // Enhanced add event function
   window.addEvent = function () {
     const name = document.getElementById('event-name').value;
     const dateStr = document.getElementById('event-date').value;

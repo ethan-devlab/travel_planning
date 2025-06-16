@@ -20,7 +20,7 @@ def get_events(request):
     data = []
     for event in events:
         data.append({
-            'id': event.id,  # Include event ID
+            'id': event.id,
             'eventName': event.event_name,
             'date': event.date.strftime('%Y-%m-%d'),
             'color': event.color,

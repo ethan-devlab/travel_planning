@@ -14,7 +14,6 @@
     <form method="post">
         {% csrf_token %}
         
-        <!-- Basic Information Section -->
         <div class="form-section">
             <h5 class="section-title">
                 <i class="ri-information-line"></i>
@@ -23,7 +22,6 @@
             {{ form.as_p }}
         </div>
 
-        <!-- Locations Section -->
         <div class="form-section">
             <h5 class="section-title">
                 <i class="ri-map-pin-line"></i>
@@ -99,7 +97,6 @@
             </button>
         </div>
 
-        <!-- Submit Section -->
         <div class="submit-section">
             <button type="submit" class="btn btn-primary">
                 <i class="ri-save-line"></i>
@@ -110,13 +107,11 @@
 </div>
 
 <script>
-// 動態新增地點
 function addLocation() {
     const container = document.getElementById('locations-container');
     const original = container.querySelector('.location-entry');
     const clone = original.cloneNode(true);
     
-    // 清空欄位
     clone.querySelectorAll('input, select').forEach(el => el.value = '');
     clone.querySelector('.expense-list').innerHTML = `
         <div class="expense-header">
@@ -131,17 +126,14 @@ function addLocation() {
         </div>
     `;
     
-    // 添加動畫效果
     clone.classList.add('new-entry');
     container.appendChild(clone);
     
-    // 移除動畫類別
     setTimeout(() => {
         clone.classList.remove('new-entry');
     }, 500);
 }
 
-// 刪除地點
 function removeLocation(btn) {
     const entry = btn.closest('.location-entry');
     const container = document.getElementById('locations-container');
@@ -155,7 +147,6 @@ function removeLocation(btn) {
     }
 }
 
-// 新增支出
 function addExpense(btn) {
     const expenseList = btn.closest('.expense-list');
     const idx = Array.from(document.getElementById('locations-container').children).indexOf(btn.closest('.location-entry'));

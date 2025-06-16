@@ -20,7 +20,6 @@
     <form method="post">
         {% csrf_token %}
 
-        <!-- Basic Information Section -->
         <div class="form-section">
             <h5 class="section-title">
                 <i class="ri-information-line"></i>
@@ -31,7 +30,6 @@
             </div>
         </div>
 
-        <!-- Locations Section -->
         <div class="form-section">
             <h5 class="section-title">
                 <i class="ri-map-pin-line"></i>
@@ -145,7 +143,6 @@
             </button>
         </div>
 
-        <!-- Action Buttons -->
         <div class="action-buttons">
             <button type="submit" class="btn btn-primary">
                 <i class="ri-save-line"></i>
@@ -165,7 +162,6 @@
         const original = container.querySelector('.location-entry');
         const clone = original.cloneNode(true);
 
-        // 清空欄位
         clone.querySelectorAll('input, select').forEach(el => el.value = '');
         clone.querySelector('.expense-list').innerHTML = `
         <div class="expense-header">
@@ -180,11 +176,9 @@
         </div>
     `;
 
-        // 添加動畫效果
         clone.classList.add('new-entry');
         container.appendChild(clone);
 
-        // 移除動畫類別
         setTimeout(() => {
             clone.classList.remove('new-entry');
         }, 500);

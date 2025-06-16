@@ -11,13 +11,11 @@
 <div class="exchange-page">
     <h2 class="page-header">💱 貨幣兌換計算器</h2>
 
-    <!-- Exchange Form Section -->
     <div class="exchange-section">
         <form method="post" id="exchange-form">
             {% csrf_token %}
             
             <div class="exchange-container">
-                <!-- Amount Input -->
                 <div class="currency-section">
                     <label class="form-label">
                         <i class="ri-money-dollar-circle-line"></i>
@@ -31,7 +29,6 @@
                     </small>
                 </div>
 
-                <!-- From Currency -->
                 <div class="currency-section">
                     <label class="form-label">
                         <i class="ri-arrow-right-up-line"></i>
@@ -53,7 +50,6 @@
                     </select>
                 </div>
 
-                <!-- To Currency -->
                 <div class="currency-section">
                     <label class="form-label">
                         <i class="ri-arrow-right-down-line"></i>
@@ -75,7 +71,6 @@
                     </select>
                 </div>
 
-                <!-- Convert Button -->
                 <div class="currency-section">
                     <button class="convert-button" type="submit">
                         <i class="ri-exchange-line"></i>
@@ -86,7 +81,6 @@
         </form>
     </div>
 
-    <!-- Result Section -->
     {% if result %}
     <div class="result-section">
         <p class="result-text">
@@ -109,7 +103,6 @@
     </div>
     {% endif %}
 
-    <!-- Information Section -->
     <div class="info-section">
         <h6 class="info-title">
             <i class="ri-information-line"></i>
@@ -127,7 +120,6 @@
     const inputInfo = document.getElementById('input-info');
     const form = document.getElementById('exchange-form');
 
-    // Real-time input validation
     amountInput.addEventListener('input', function() {
         const value = parseFloat(this.value);
         
@@ -142,7 +134,6 @@
         }
     });
 
-    // Form submission validation
     form.addEventListener('submit', function(e) {
         const amount = parseFloat(amountInput.value);
         
@@ -154,7 +145,6 @@
         }
     });
 
-    // Clear validation on focus
     amountInput.addEventListener('focus', function() {
         this.classList.remove('is-invalid');
         inputInfo.style.display = 'none';

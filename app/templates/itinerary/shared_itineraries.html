@@ -12,7 +12,6 @@
     <h2 class="page-header">👥 與我協作的行程</h2>
     
     {% if itineraries %}
-    <!-- Statistics Section -->
     <div class="stats-section">
         <div class="stats-grid">
             <div class="stat-item">
@@ -22,7 +21,6 @@
         </div>
     </div>
 
-    <!-- Itineraries Grid -->
     <div class="itinerary-grid">
         {% for item in itineraries %}
         <div class="itinerary-card">
@@ -83,7 +81,6 @@
         {% endfor %}
     </div>
     {% else %}
-    <!-- Empty State -->
     <div class="empty-state">
         <div class="empty-state-icon">🗺️</div>
         <h3>還沒有任何行程</h3>
